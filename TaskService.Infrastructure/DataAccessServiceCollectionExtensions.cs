@@ -1,11 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Domain.Interfaces;
+using Infrastructure.Repositories;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using TaskService.Domain.Interfaces;
-using TaskService.Infrastructure.Repositories;
+using TaskService.Infrastructure;
 
-namespace TaskService.Infrastructure;
+namespace Infrastructure;
 
 public static class DataAccessServiceCollectionExtensions
 {

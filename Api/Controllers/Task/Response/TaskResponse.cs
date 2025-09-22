@@ -1,4 +1,4 @@
-﻿namespace TaskService.Api.Controllers.Task.Responce;
+﻿namespace Api.Controllers.Task.Response;
 
 public record TaskResponse
 {

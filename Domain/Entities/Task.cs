@@ -1,10 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-using System.Text.Json;
+﻿using System.Text.Json;
 using System.Text.Json.Serialization;
-using TaskService.Domain.Entities.Base;
-using TaskService.Domain.Interfaces;
+using Domain.Entities.Base;
+using Domain.Interfaces;
 
-namespace TaskService.Domain.Entities;
+namespace Domain.Entities;
 
 public partial class Task : BaseEntity<Guid>
 {

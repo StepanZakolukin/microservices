@@ -1,8 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
-using TaskService.Domain.Entities;
-using Task = TaskService.Domain.Entities.Task;
+﻿using Domain.Entities;
+using Microsoft.EntityFrameworkCore;
+using Task = Domain.Entities.Task;
 
-namespace TaskService.Infrastructure;
+namespace Infrastructure;
 
 /// <summary>
 ///     Application unit of work.

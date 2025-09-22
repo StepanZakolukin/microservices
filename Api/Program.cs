@@ -1,9 +1,9 @@
 using Serilog;
 using Core.Logs;
 using Core.Traces.Middleware;
-using TaskService.BusinessLogic;
-using TaskService.Infrastructure;
-using TaskService.BusinessLogic.Interfaces;
+using BusinessLogic;
+using Infrastructure;
+using BusinessLogic.Interfaces;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);

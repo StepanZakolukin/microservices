@@ -1,8 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Domain.Entities;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using TaskService.Domain.Entities;
 
-namespace TaskService.Infrastructure.ModelConfigurations;
+namespace Infrastructure.ModelConfigurations;
 
 internal class TaskChangeConfiguration : IEntityTypeConfiguration<TaskChange>
 {

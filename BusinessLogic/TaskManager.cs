@@ -1,8 +1,8 @@
-﻿using TaskService.BusinessLogic.Interfaces;
-using TaskService.Domain.Interfaces;
-using Task = TaskService.Domain.Entities.Task;
+﻿using BusinessLogic.Interfaces;
+using Domain.Interfaces;
+using Task = Domain.Entities.Task;
 
-namespace TaskService.BusinessLogic;
+namespace BusinessLogic;
 
 public class TaskManager : ITaskManager
 {

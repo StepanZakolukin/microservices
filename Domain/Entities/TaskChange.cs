@@ -1,7 +1,7 @@
 ﻿using System.Text.Json;
-using TaskService.Domain.Entities.Base;
+using Domain.Entities.Base;
 
-namespace TaskService.Domain.Entities;
+namespace Domain.Entities;
 
 public class TaskChange : BaseEntity<Guid>
 {

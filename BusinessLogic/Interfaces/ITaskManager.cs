@@ -1,4 +1,4 @@
-﻿namespace TaskService.BusinessLogic.Interfaces;
+﻿namespace BusinessLogic.Interfaces;
 
 public interface ITaskManager
 {
@@ -6,7 +6,7 @@ public interface ITaskManager
     
     Task DeleteTaskAsync(Guid id, CancellationToken cancellationToken);
     
-    Task<TaskService.Domain.Entities.Task> GetTaskAsync(Guid id, CancellationToken cancellationToken);
+    Task<Domain.Entities.Task> GetTaskAsync(Guid id, CancellationToken cancellationToken);
     
     Task UpdateTaskAsync(Guid id, string title, string? description, CancellationToken cancellationToken);
     

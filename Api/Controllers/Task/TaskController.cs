@@ -1,10 +1,10 @@
+using Api.Controllers.Task.Request;
+using Api.Controllers.Task.Response;
 using Microsoft.AspNetCore.Mvc;
 using Saritasa.Tools.Common.Pagination;
-using TaskService.Api.Controllers.Task.Request;
-using TaskService.Api.Controllers.Task.Responce;
-using TaskService.BusinessLogic.Interfaces;
+using BusinessLogic.Interfaces;
 
-namespace TaskService.Api.Controllers.Task;
+namespace Api.Controllers.Task;
 
 [ApiController]
 [Route("api/tasks")]

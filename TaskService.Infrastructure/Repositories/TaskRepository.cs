@@ -1,7 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
-using TaskService.Domain.Interfaces;
+﻿using Domain.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
-namespace TaskService.Infrastructure.Repositories;
+namespace Infrastructure.Repositories;
 
 internal class TaskRepository : ITaskRepository
 {

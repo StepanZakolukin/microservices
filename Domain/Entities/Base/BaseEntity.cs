@@ -1,4 +1,4 @@
-﻿namespace TaskService.Domain.Entities.Base;
+﻿namespace Domain.Entities.Base;
 
 public abstract class BaseEntity<T>
 {

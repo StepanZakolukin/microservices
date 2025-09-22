@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Task = TaskService.Domain.Entities.Task;
+using Task = Domain.Entities.Task;
 
-namespace TaskService.Infrastructure.ModelConfigurations;
+namespace Infrastructure.ModelConfigurations;
 
 internal class TaskConfiguration : IEntityTypeConfiguration<Task>
 {

@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace TaskService.Api.Controllers.Task.Request;
+namespace Api.Controllers.Task.Request;
 
 public record TaskRequest
 {
