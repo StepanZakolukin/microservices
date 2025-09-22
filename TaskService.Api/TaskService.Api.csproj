@@ -7,16 +7,17 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.9" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.9">
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
           <PrivateAssets>all</PrivateAssets>
         </PackageReference>
         <PackageReference Include="Saritasa.Tools.Common" Version="5.0.1" />
+        <PackageReference Include="Serilog.AspNetCore" Version="9.0.0" />
         <PackageReference Include="Swashbuckle.AspNetCore" Version="9.0.4" />
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\Core\Core.csproj" />
       <ProjectReference Include="..\TaskService.BusinessLogic\TaskService.BusinessLogic.csproj" />
       <ProjectReference Include="..\TaskService.Domain\TaskService.Domain.csproj" />
       <ProjectReference Include="..\TaskService.Infrastructure\TaskService.Infrastructure.csproj" />

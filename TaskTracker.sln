@@ -8,6 +8,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskService.Domain", "TaskS
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskService.Infrastructure", "TaskService.Infrastructure\TaskService.Infrastructure.csproj", "{A1279F72-DC6D-44F7-93EA-C31AF1A4AC72}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libs", "Libs", "{D3C1F1E1-4530-4F77-AA4D-4358847A578C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "Core\Core.csproj", "{046D57F8-F255-4F9E-AF91-9E545CE7323A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,7 +34,12 @@ Global
 		{A1279F72-DC6D-44F7-93EA-C31AF1A4AC72}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A1279F72-DC6D-44F7-93EA-C31AF1A4AC72}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A1279F72-DC6D-44F7-93EA-C31AF1A4AC72}.Release|Any CPU.Build.0 = Release|Any CPU
+		{046D57F8-F255-4F9E-AF91-9E545CE7323A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{046D57F8-F255-4F9E-AF91-9E545CE7323A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{046D57F8-F255-4F9E-AF91-9E545CE7323A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{046D57F8-F255-4F9E-AF91-9E545CE7323A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
+		{046D57F8-F255-4F9E-AF91-9E545CE7323A} = {D3C1F1E1-4530-4F77-AA4D-4358847A578C}
 	EndGlobalSection
 EndGlobal
