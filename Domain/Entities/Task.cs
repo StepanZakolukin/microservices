@@ -1,5 +1,4 @@
-﻿using System.Text.Json;
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
 using Domain.Entities.Base;
 using Domain.Interfaces;
 
@@ -19,6 +18,10 @@ public partial class Task : BaseEntity<Guid>
     public IEnumerable<TaskChange> Changes => _changes.Select(change => change);
 
     private readonly List<TaskChange> _changes;
+
+    internal Task()
+    {
+    }
 
     private Task(string title, string? description = null, Guid id = default)
     {
@@ -46,33 +49,23 @@ public partial class Task
     public async System.Threading.Tasks.Task UpdateAsync(
         string title,
         string? description,
-        ITaskRepository taskRepository,
+        IUnitOfWork unitOfWork,
         CancellationToken cancellationToken
     )
     {
+        ThrowExceptionIfDeleted();
+        
         Title = title;
         Description = description;
-        ThrowExceptionIfDeleted();
         
         var change = new TaskChange(this);
         _changes.Add(change);
 
-        try
-        {
-            await taskRepository.UpdateAsync(this, cancellationToken);
-        }
-        catch
-        {
-            _changes.RemoveAt(_changes.Count - 1);
-            var previousState = JsonSerializer.Deserialize<Task>(_changes[^1].TaskState);
-            Title = previousState.Title;
-            Description = previousState.Description;
-            throw;
-        }
+        await UpdateDataAsync(change, unitOfWork, cancellationToken);
     }
     
     public async System.Threading.Tasks.Task DeleteAsync(
-        ITaskRepository taskRepository,
+        IUnitOfWork unitOfWork,
         CancellationToken cancellationToken
     )
     {
@@ -82,21 +75,12 @@ public partial class Task
         var change = new TaskChange(this);
         _changes.Add(change);
 
-        try
-        {
-            await taskRepository.UpdateAsync(this, cancellationToken);
-        }
-        catch
-        {
-            Deleted = false;
-            _changes.RemoveAt(_changes.Count - 1);
-            throw;
-        }
+        await UpdateDataAsync(change, unitOfWork, cancellationToken);
     }
 
     public async System.Threading.Tasks.Task AssignPerformerAsync(
         Guid userId,
-        ITaskRepository taskRepository,
+        IUnitOfWork unitOfWork,
         CancellationToken cancellationToken
     )
     {
@@ -106,16 +90,17 @@ public partial class Task
         var change = new TaskChange(this);
         _changes.Add(change);
 
-        try
-        {
-            await taskRepository.UpdateAsync(this, cancellationToken);
-        }
-        catch
-        {
-            _changes.RemoveAt(_changes.Count - 1);
-            var previousState = JsonSerializer.Deserialize<Task>(_changes[^1].TaskState);
-            PerformerId = previousState.PerformerId;
-            throw;
-        }
+        await UpdateDataAsync(change, unitOfWork, cancellationToken);
+    }
+
+    public async System.Threading.Tasks.Task UpdateDataAsync(
+        TaskChange change,
+        IUnitOfWork unitOfWork,
+        CancellationToken cancellationToken
+    )
+    {
+        await unitOfWork.Changes.AddAsync(change, cancellationToken);
+        unitOfWork.Tasks.Update(this);
+        await unitOfWork.SaveAsync(cancellationToken);
     }
 }

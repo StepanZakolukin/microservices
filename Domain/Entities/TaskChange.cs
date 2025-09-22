@@ -13,14 +13,14 @@ public class TaskChange : BaseEntity<Guid>
     
     public Task Task { get; private set; }
 
-    protected TaskChange()
+    internal TaskChange()
     {
     }
     
     public TaskChange(Task task)
     {
         Id = Guid.NewGuid();
-        Date = DateTime.Now;
+        Date = DateTime.UtcNow;
         TaskState = JsonSerializer.Serialize(task);
         TaskId = task.Id;
         Task = task;

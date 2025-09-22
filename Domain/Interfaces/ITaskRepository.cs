@@ -4,7 +4,7 @@ public interface ITaskRepository
 {
     Task AddAsync(Entities.Task task, CancellationToken cancellationToken);
     
-    Task UpdateAsync(Entities.Task task, CancellationToken cancellationToken);
+    void Update(Entities.Task task);
     
     Task<Entities.Task> GetByIdAsync(Guid id, CancellationToken cancellationToken);
 }

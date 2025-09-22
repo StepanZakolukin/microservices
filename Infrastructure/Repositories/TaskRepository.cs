@@ -15,14 +15,11 @@ internal class TaskRepository : ITaskRepository
     public async Task AddAsync(Domain.Entities.Task task, CancellationToken cancellationToken)
     {
         await _dbContext.Tasks.AddAsync(task, cancellationToken);
-        await _dbContext.SaveChangesAsync(cancellationToken);
     }
 
-    public async Task UpdateAsync(Domain.Entities.Task task, CancellationToken cancellationToken)
+    public void Update(Domain.Entities.Task task)
     {
         _dbContext.Tasks.Update(task);
-        var result = await _dbContext.SaveChangesAsync(cancellationToken);
-        if (result == 0) throw new InvalidOperationException("The object was not found");
     }
 
     public async Task<Domain.Entities.Task> GetByIdAsync(Guid id, CancellationToken cancellationToken)

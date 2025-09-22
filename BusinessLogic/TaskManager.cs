@@ -6,11 +6,13 @@ namespace BusinessLogic;
 
 public class TaskManager : ITaskManager
 {
-    private readonly ITaskRepository _taskRepository;
+    private readonly Serilog.ILogger _logger;
+    private readonly IUnitOfWork _unitOfWork;
     
-    public TaskManager(ITaskRepository taskRepository)
+    public TaskManager(IUnitOfWork unitOfWork, Serilog.ILogger logger)
     {
-        _taskRepository = taskRepository;
+        _logger = logger;
+        _unitOfWork = unitOfWork;
     }
     
     public async Task<Guid> CreateTaskAsync(
@@ -19,19 +21,21 @@ public class TaskManager : ITaskManager
         CancellationToken cancellationToken)
     {
         var task = Task.Create(title, description);
-        await _taskRepository.AddAsync(task, cancellationToken);
+        await _unitOfWork.Tasks.AddAsync(task, cancellationToken);
         return task.Id;
     }
 
     public async System.Threading.Tasks.Task DeleteTaskAsync(Guid id, CancellationToken cancellationToken)
     {
         var task = await GetTaskAsync(id, cancellationToken);
-        await task.DeleteAsync(_taskRepository, cancellationToken);
+        await task.DeleteAsync(_unitOfWork, cancellationToken);
     }
 
     public async Task<Task> GetTaskAsync(Guid id, CancellationToken cancellationToken)
     {
-        var task = await _taskRepository.GetByIdAsync(id, cancellationToken);
+        _logger.Information("Отправил запрос на получение {TaskName} с id = {Guid}", nameof(Task), id);
+        var task = await _unitOfWork.Tasks.GetByIdAsync(id, cancellationToken);
+        _logger.Information("Получил {TaskName} с id = {Guid}", nameof(Task), id);
         return task;
     }
 
@@ -43,7 +47,7 @@ public class TaskManager : ITaskManager
     )
     {
         var task = await GetTaskAsync(id, cancellationToken);
-        await task.UpdateAsync(title, description, _taskRepository, cancellationToken);
+        await task.UpdateAsync(title, description, _unitOfWork, cancellationToken);
     }
 
     public async System.Threading.Tasks.Task AssignPerformerAsync(
@@ -53,6 +57,6 @@ public class TaskManager : ITaskManager
     )
     {
         var task = await GetTaskAsync(taskId, cancellationToken);
-        await task.AssignPerformerAsync(userId, _taskRepository, cancellationToken);
+        await task.AssignPerformerAsync(userId, _unitOfWork, cancellationToken);
     }
 }
