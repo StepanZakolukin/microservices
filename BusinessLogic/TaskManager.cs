@@ -35,6 +35,8 @@ public class TaskManager : ITaskManager
     {
         _logger.Information("Отправил запрос на получение {TaskName} с id = {Guid}", nameof(Task), id);
         var task = await _unitOfWork.Tasks.GetByIdAsync(id, cancellationToken);
+        if (task.Deleted)
+            throw new InvalidOperationException("Task is already deleted");
         _logger.Information("Получил {TaskName} с id = {Guid}", nameof(Task), id);
         return task;
     }
