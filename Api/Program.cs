@@ -1,9 +1,9 @@
-using Serilog;
 using Core.Logs;
 using Core.Traces.Middleware;
 using BusinessLogic;
 using Infrastructure;
 using BusinessLogic.Interfaces;
+using Core;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,11 +12,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDataAccess(builder.Configuration);
 builder.Services.TryAddScoped<ITaskManager, TaskManager>();
 
-// Настраиваем логирование, на основе Serilog
-builder.Services.AddLoggerServices();
-builder.Host.UseSerilog(
-    (builderContext, logConfiguration) => logConfiguration.GetConfiguration(),
-    preserveStaticLogger: true);
+//Подключаем Core сервисы
+builder.Services.AddCore(builder.Host);
 
 builder.Services.AddControllers();
 

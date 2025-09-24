@@ -1,15 +1,13 @@
-using Core.Logs;
+using System.Net.Mime;
+using Core;
 using Core.Traces.Middleware;
-using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-// Настраиваем логирование, на основе Serilog
-builder.Services.AddLoggerServices();
-builder.Host.UseSerilog(
-    (builderContext, logConfiguration) => logConfiguration.GetConfiguration(),
-    preserveStaticLogger: true);
+
+// Подключаем Core сервисы
+builder.Services.AddCore(builder.Host);
 
 builder.Services.AddControllers();
 
