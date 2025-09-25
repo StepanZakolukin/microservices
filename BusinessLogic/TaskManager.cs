@@ -22,6 +22,7 @@ internal class TaskManager : ITaskManager
     {
         var task = Task.Create(title, description);
         await _unitOfWork.Tasks.AddAsync(task, cancellationToken);
+        _logger.Information("Created task {@task}", task);
         return task.Id;
     }
 
@@ -29,15 +30,14 @@ internal class TaskManager : ITaskManager
     {
         var task = await GetTaskAsync(id, cancellationToken);
         await task.DeleteAsync(_unitOfWork, cancellationToken);
+        _logger.Information("Deleted task {@task}", task);
     }
 
     public async Task<Task> GetTaskAsync(Guid id, CancellationToken cancellationToken)
     {
-        _logger.Information("Отправил запрос на получение {TaskName} с id = {Guid}", nameof(Task), id);
         var task = await _unitOfWork.Tasks.GetByIdAsync(id, cancellationToken);
         if (task.Deleted)
             throw new InvalidOperationException("Task is already deleted");
-        _logger.Information("Получил {TaskName} с id = {Guid}", nameof(Task), id);
         return task;
     }
 
@@ -50,6 +50,7 @@ internal class TaskManager : ITaskManager
     {
         var task = await GetTaskAsync(id, cancellationToken);
         await task.UpdateAsync(title, description, _unitOfWork, cancellationToken);
+        _logger.Information("Updated task: {@task}", task);
     }
 
     public async System.Threading.Tasks.Task AssignPerformerAsync(
@@ -60,5 +61,6 @@ internal class TaskManager : ITaskManager
     {
         var task = await GetTaskAsync(taskId, cancellationToken);
         await task.AssignPerformerAsync(userId, _unitOfWork, cancellationToken);
+        _logger.Information("Assigned a performer for the task: {@task}", task);
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Core.Domain.Entities.Base;
+using Destructurama.Attributed;
 
 namespace NotificationService.Domain.Entities;
 
@@ -8,6 +9,7 @@ public class Notification : BaseEntity<Guid>
     
     public required DateTime Created { get; init; }
     
+    [LogAsScalar]
     public required string Message { get; init; }
     
     public required Guid TaskId { get; init; }

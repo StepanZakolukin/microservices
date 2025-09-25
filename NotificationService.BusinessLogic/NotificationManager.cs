@@ -7,9 +7,11 @@ namespace NotificationService.BusinessLogic;
 internal class NotificationManager : INotificationManager
 {
     private readonly IUnitOfWork _unitOfWork;
+    private readonly Serilog.ILogger _logger;
 
-    public NotificationManager(IUnitOfWork unitOfWork)
+    public NotificationManager(IUnitOfWork unitOfWork, Serilog.ILogger logger)
     {
+        _logger = logger;
         _unitOfWork = unitOfWork;
     }
 
@@ -25,6 +27,7 @@ internal class NotificationManager : INotificationManager
         
         await _unitOfWork.Notifications.AddNotificationAsync(notification, cancellationToken);
         await _unitOfWork.SaveChangesAsync(cancellationToken);
+        _logger.Information("Created notification {@notification}", notification);
         
         return notification.Id;
     }
@@ -34,6 +37,7 @@ internal class NotificationManager : INotificationManager
         var notification = await _unitOfWork.Notifications.GetNotificationAsync(notificationId, cancellationToken);
         notification.MarkAsRead();
         await _unitOfWork.SaveChangesAsync(cancellationToken);
+        _logger.Information("Notification with Id = {@notificationId} marked as read", notificationId);
     }
 
     public async Task<IEnumerable<Notification>> GetNotificationListAsync(Guid userId, CancellationToken cancellationToken)

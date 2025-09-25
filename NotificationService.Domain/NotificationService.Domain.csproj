@@ -7,11 +7,11 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="Interfaces\" />
+      <ProjectReference Include="..\Core.Domain\Core.Domain.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Core.Domain\Core.Domain.csproj" />
+      <PackageReference Include="Destructurama.Attributed" Version="5.1.0" />
     </ItemGroup>
 
 </Project>

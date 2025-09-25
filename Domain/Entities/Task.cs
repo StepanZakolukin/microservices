@@ -1,5 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 using Core.Domain.Entities.Base;
+using Destructurama.Attributed;
 using Domain.Interfaces;
 
 namespace Domain.Entities;
@@ -12,8 +13,10 @@ public partial class Task : BaseEntity<Guid>
     
     public string Title { get; private set; }
     
+    [LogAsScalar]
     public string? Description { get; private set; }
 
+    [NotLogged]
     [JsonIgnore]
     public IEnumerable<TaskChange> Changes => _changes.AsEnumerable();
 
