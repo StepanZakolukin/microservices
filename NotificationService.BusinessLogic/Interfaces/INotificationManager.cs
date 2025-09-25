@@ -9,4 +9,6 @@ public interface INotificationManager
     Task MarkAsReadAsync(Guid notificationId, CancellationToken cancellationToken);
     
     Task<IEnumerable<Notification>> GetNotificationListAsync(Guid userId, CancellationToken cancellationToken);
+    
+    Task<IEnumerable<string>> GetUnreadNotificationListAsync(Guid userId, CancellationToken cancellationToken = default);
 }

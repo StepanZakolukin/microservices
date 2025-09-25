@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using NotificationService.Api.Controllers.Notification.Request;
 using NotificationService.Api.Controllers.Notification.Response;
+using NotificationService.Api.Services.Interfaces;
 using NotificationService.BusinessLogic.Interfaces;
 
 namespace NotificationService.Api.Controllers.Notification;
@@ -10,9 +11,11 @@ namespace NotificationService.Api.Controllers.Notification;
 public class NotificationsController : ControllerBase
 {
     private readonly INotificationManager _notificationManager;
-    public NotificationsController(INotificationManager notificationManager)
+    private readonly INotificationService _notificationService;
+    public NotificationsController(INotificationManager notificationManager, INotificationService notificationService)
     {
         _notificationManager = notificationManager;
+        _notificationService = notificationService;
     }
 
     [HttpGet("{userId:guid}")]
@@ -41,6 +44,11 @@ public class NotificationsController : ControllerBase
         var result = await _notificationManager.CreateNotificationAsync(
             notification.UserId,
             notification.TaskId,
+            notification.Text,
+            cancellationToken);
+        
+        await _notificationService.SendNotificationAsync(
+            $"{notification.UserId}",
             notification.Text,
             cancellationToken);
 

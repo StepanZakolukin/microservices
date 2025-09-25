@@ -8,7 +8,7 @@ internal class NotificationManager : INotificationManager
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly Serilog.ILogger _logger;
-
+    
     public NotificationManager(IUnitOfWork unitOfWork, Serilog.ILogger logger)
     {
         _logger = logger;
@@ -44,5 +44,19 @@ internal class NotificationManager : INotificationManager
     {
         var result = await _unitOfWork.Notifications.GetNotificationListAsync(userId, cancellationToken);
         return result;
+    }
+
+    public async Task<IEnumerable<string>> GetUnreadNotificationListAsync(Guid userId, CancellationToken cancellationToken)
+    {
+        var notificationList = await _unitOfWork.Notifications.GetNotificationListAsync(
+            userId,
+            cancellationToken);
+            
+        if (notificationList is null) return new List<string>();
+
+        return notificationList
+            .Where(notification => !notification.ReadIt)
+            .OrderBy(notification => notification.Created)
+            .Select(notification => notification.Text);
     }
 }

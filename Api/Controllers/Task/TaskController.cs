@@ -32,15 +32,6 @@ public class TaskController : ControllerBase
         var task = await _taskManager.GetTaskAsync(id, cancellationToken);
         return Ok(Convert(task));
     }
-
-    private TaskResponse Convert(Domain.Entities.Task task) => new()
-        {
-            Id = task.Id,
-            Title = task.Title,
-            Description = task.Description,
-            PerformerId = task.PerformerId,
-            CreatorId = task.CreatorId,
-        };
     
     [HttpPost]
     [ProducesResponseType<Guid>(StatusCodes.Status201Created)]
@@ -91,4 +82,13 @@ public class TaskController : ControllerBase
         await _taskManager.AssignPerformerAsync(id, user.Id, cancellationToken);
         return NoContent();
     }
+    
+    private TaskResponse Convert(Domain.Entities.Task task) => new()
+    {
+        Id = task.Id,
+        Title = task.Title,
+        Description = task.Description,
+        PerformerId = task.PerformerId,
+        CreatorId = task.CreatorId,
+    };
 }
