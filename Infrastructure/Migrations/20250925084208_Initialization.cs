@@ -11,8 +11,12 @@ namespace Infrastructure.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.EnsureSchema(
+                name: "task_service");
+
             migrationBuilder.CreateTable(
                 name: "Tasks",
+                schema: "task_service",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
@@ -28,6 +32,7 @@ namespace Infrastructure.Migrations
 
             migrationBuilder.CreateTable(
                 name: "Changes",
+                schema: "task_service",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
@@ -41,6 +46,7 @@ namespace Infrastructure.Migrations
                     table.ForeignKey(
                         name: "FK_Changes_Tasks_TaskId",
                         column: x => x.TaskId,
+                        principalSchema: "task_service",
                         principalTable: "Tasks",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -48,6 +54,7 @@ namespace Infrastructure.Migrations
 
             migrationBuilder.CreateIndex(
                 name: "IX_Changes_TaskId",
+                schema: "task_service",
                 table: "Changes",
                 column: "TaskId");
         }
@@ -56,10 +63,12 @@ namespace Infrastructure.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Changes");
+                name: "Changes",
+                schema: "task_service");
 
             migrationBuilder.DropTable(
-                name: "Tasks");
+                name: "Tasks",
+                schema: "task_service");
         }
     }
 }

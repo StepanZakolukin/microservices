@@ -4,7 +4,7 @@ using Task = Domain.Entities.Task;
 
 namespace BusinessLogic;
 
-public class TaskManager : ITaskManager
+internal class TaskManager : ITaskManager
 {
     private readonly Serilog.ILogger _logger;
     private readonly IUnitOfWork _unitOfWork;

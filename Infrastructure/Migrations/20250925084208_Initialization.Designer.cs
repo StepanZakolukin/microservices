@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250922162638_Initialization")]
+    [Migration("20250925084208_Initialization")]
     partial class Initialization
     {
         /// <inheritdoc />
@@ -20,6 +20,7 @@ namespace Infrastructure.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
+                .HasDefaultSchema("task_service")
                 .HasAnnotation("ProductVersion", "9.0.9")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
@@ -46,7 +47,7 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Tasks");
+                    b.ToTable("Tasks", "task_service");
                 });
 
             modelBuilder.Entity("Domain.Entities.TaskChange", b =>
@@ -69,7 +70,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("TaskId");
 
-                    b.ToTable("Changes");
+                    b.ToTable("Changes", "task_service");
                 });
 
             modelBuilder.Entity("Domain.Entities.TaskChange", b =>

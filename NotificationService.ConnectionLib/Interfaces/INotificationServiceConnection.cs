@@ -2,5 +2,5 @@
 
 public interface INotificationServiceConnection
 {
-    Task CreateNotificationAsync(NotificationInfo notificationInfo, CancellationToken cancellationToken);
+    Task<Guid> CreateNotificationAsync(NotificationRequest notificationRequest, CancellationToken cancellationToken);
 }

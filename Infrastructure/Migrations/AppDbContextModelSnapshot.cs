@@ -17,6 +17,7 @@ namespace Infrastructure.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
+                .HasDefaultSchema("task_service")
                 .HasAnnotation("ProductVersion", "9.0.9")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
@@ -43,7 +44,7 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Tasks");
+                    b.ToTable("Tasks", "task_service");
                 });
 
             modelBuilder.Entity("Domain.Entities.TaskChange", b =>
@@ -66,7 +67,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("TaskId");
 
-                    b.ToTable("Changes");
+                    b.ToTable("Changes", "task_service");
                 });
 
             modelBuilder.Entity("Domain.Entities.TaskChange", b =>

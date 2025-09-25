@@ -1,13 +1,17 @@
-using System.Net.Mime;
 using Core;
 using Core.Traces.Middleware;
+using NotificationService.BusinessLogic;
+using NotificationService.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-// Подключаем Core сервисы
-builder.Services.AddCore(builder.Host);
+// Подключаем Core сервисы, бизнесс-логику, инфроструктуру
+builder.Services
+    .AddCore(builder.Host)
+    .AddBusinessLogic()
+    .AddInfrastructure(builder.Configuration);
 
 builder.Services.AddControllers();
 

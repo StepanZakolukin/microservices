@@ -1,5 +1,5 @@
 ﻿using System.Text.Json.Serialization;
-using Domain.Entities.Base;
+using Core.Domain.Entities.Base;
 using Domain.Interfaces;
 
 namespace Domain.Entities;
@@ -15,7 +15,7 @@ public partial class Task : BaseEntity<Guid>
     public string? Description { get; private set; }
 
     [JsonIgnore]
-    public IEnumerable<TaskChange> Changes => _changes.Select(change => change);
+    public IEnumerable<TaskChange> Changes => _changes.AsEnumerable();
 
     private readonly List<TaskChange> _changes;
 

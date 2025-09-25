@@ -1,5 +1,5 @@
 ﻿using System.Text.Json;
-using Domain.Entities.Base;
+using Core.Domain.Entities.Base;
 
 namespace Domain.Entities;
 

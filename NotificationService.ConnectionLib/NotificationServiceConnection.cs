@@ -14,12 +14,13 @@ public class NotificationServiceConnection : INotificationServiceConnection
         _httpRequestService = httpRequestService;
     }
     
-    public async Task CreateNotificationAsync(NotificationInfo notificationInfo, CancellationToken cancellationToken)
+    public async Task<Guid> CreateNotificationAsync(NotificationRequest notificationRequest, CancellationToken cancellationToken)
     {
         var requestData = new HttpRequestData
         {
             Method = HttpMethod.Post,
             Uri = CombineUri(BaseUrl, "notifications"),
+            Body = notificationRequest
         };
 
         var connectionData = new HttpConnectionData
@@ -28,9 +29,9 @@ public class NotificationServiceConnection : INotificationServiceConnection
             CancellationToken = cancellationToken
         };
 
-        var response = await _httpRequestService.SendRequestAsync<string>(requestData, connectionData);
+        var response = await _httpRequestService.SendRequestAsync<Guid>(requestData, connectionData);
         
-        if (response.IsSuccessStatusCode) return;
+        if (response.IsSuccessStatusCode) return response.Body;
         
         throw new HttpRequestException($"The notification creation request failed. Microservice response: {response}.");
     }

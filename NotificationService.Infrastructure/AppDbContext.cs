@@ -1,8 +1,7 @@
-﻿using Domain.Entities;
-using Microsoft.EntityFrameworkCore;
-using Task = Domain.Entities.Task;
+﻿using Microsoft.EntityFrameworkCore;
+using NotificationService.Domain.Entities;
 
-namespace Infrastructure;
+namespace NotificationService.Infrastructure;
 
 /// <summary>
 ///     Application unit of work.
@@ -13,15 +12,13 @@ internal class AppDbContext : DbContext
     {
     }
 
-    public DbSet<Task> Tasks => Set<Task>();
-    
-    public DbSet<TaskChange> Changes => Set<TaskChange>();
+    public DbSet<Notification> Notifications => Set<Notification>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
 
-        modelBuilder.HasDefaultSchema("task_service");
+        modelBuilder.HasDefaultSchema("notification_service");
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(AppDbContext).Assembly);
     }
 }

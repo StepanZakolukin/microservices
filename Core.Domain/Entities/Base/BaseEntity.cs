@@ -1,4 +1,4 @@
-﻿namespace Domain.Entities.Base;
+﻿namespace Core.Domain.Entities.Base;
 
 public abstract class BaseEntity<T>
 {

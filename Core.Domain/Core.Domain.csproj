@@ -6,12 +6,4 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
-    <ItemGroup>
-      <PackageReference Include="System.Text.Json" Version="9.0.9" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <ProjectReference Include="..\Core.Domain\Core.Domain.csproj" />
-    </ItemGroup>
-
 </Project>

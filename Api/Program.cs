@@ -1,19 +1,17 @@
-using Core.Logs;
 using Core.Traces.Middleware;
 using BusinessLogic;
 using Infrastructure;
-using BusinessLogic.Interfaces;
 using Core;
-using Microsoft.Extensions.DependencyInjection.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddDataAccess(builder.Configuration);
-builder.Services.TryAddScoped<ITaskManager, TaskManager>();
 
-//Подключаем Core сервисы
-builder.Services.AddCore(builder.Host);
+//Подключаем Core сервисы, бизнесс-логику, инфраструктуру
+builder.Services
+    .AddCore(builder.Host)
+    .AddBusinessLogic()
+    .AddInfrastructure(builder.Configuration);
 
 builder.Services.AddControllers();
 
