@@ -6,7 +6,7 @@ public class NotificationResponse
     
     public required DateTime Created { get; init; }
     
-    public required string Message { get; init; }
+    public required string Text { get; init; }
     
     public required Guid TaskId { get; init; }
 

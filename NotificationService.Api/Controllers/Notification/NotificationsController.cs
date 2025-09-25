@@ -23,7 +23,7 @@ public class NotificationsController : ControllerBase
             .Select(notification => new NotificationResponse
             {
                 Created = notification.Created,
-                Message = notification.Message,
+                Text = notification.Text,
                 TaskId = notification.TaskId,
                 ReadIt = notification.ReadIt,
                 Id = notification.Id,
@@ -41,7 +41,7 @@ public class NotificationsController : ControllerBase
         var result = await _notificationManager.CreateNotificationAsync(
             notification.UserId,
             notification.TaskId,
-            notification.Message,
+            notification.Text,
             cancellationToken);
 
         return Created("api/notifications", result);

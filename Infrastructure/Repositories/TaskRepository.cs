@@ -28,4 +28,9 @@ internal class TaskRepository : ITaskRepository
             .Include(task => task.Changes)
             .FirstAsync(t => t.Id == id, cancellationToken: cancellationToken);
     }
+
+    public async Task<IEnumerable<Domain.Entities.Task>> GetAllAsync(CancellationToken cancellationToken)
+    {
+        return await _dbContext.Tasks.ToArrayAsync(cancellationToken);
+    }
 }

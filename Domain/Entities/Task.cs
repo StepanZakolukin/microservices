@@ -7,6 +7,8 @@ namespace Domain.Entities;
 
 public partial class Task : BaseEntity<Guid>
 {
+    public Guid CreatorId { get; private set; } 
+    
     public bool Deleted { get; private set; }
     
     public Guid PerformerId { get; private set; }
@@ -26,12 +28,13 @@ public partial class Task : BaseEntity<Guid>
     {
     }
 
-    private Task(string title, string? description = null, Guid id = default)
+    private Task(string title, string? description, Guid creatorId, Guid id = default)
     {
         Title = title;
         Deleted = false;
         Description = description;
         Id = id == Guid.Empty ? Guid.NewGuid() : id;
+        CreatorId = creatorId;
         _changes = [ new TaskChange(this) ];
     }
 }

@@ -21,7 +21,7 @@ internal class NotificationManager : INotificationManager
         {
             UserId = userId,
             Created = DateTime.UtcNow,
-            Message = message,
+            Text = message,
             TaskId = taskId
         };
         

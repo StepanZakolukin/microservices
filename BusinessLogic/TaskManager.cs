@@ -1,5 +1,8 @@
 ﻿using BusinessLogic.Interfaces;
 using Domain.Interfaces;
+using NotificationService.ConnectionLib;
+using NotificationService.ConnectionLib.Interfaces;
+using Saritasa.Tools.Common.Pagination;
 using Task = Domain.Entities.Task;
 
 namespace BusinessLogic;
@@ -8,16 +11,19 @@ internal class TaskManager : ITaskManager
 {
     private readonly Serilog.ILogger _logger;
     private readonly IUnitOfWork _unitOfWork;
+    private readonly INotificationServiceConnection  _notificationService;
     
-    public TaskManager(IUnitOfWork unitOfWork, Serilog.ILogger logger)
+    public TaskManager(IUnitOfWork unitOfWork, Serilog.ILogger logger, INotificationServiceConnection notificationService)
     {
         _logger = logger;
         _unitOfWork = unitOfWork;
+        _notificationService = notificationService;
     }
     
     public async Task<Guid> CreateTaskAsync(
         string title,
         string? description,
+        Guid creatorId,
         CancellationToken cancellationToken)
     {
         var task = Task.Create(title, description);
@@ -48,9 +54,19 @@ internal class TaskManager : ITaskManager
         CancellationToken cancellationToken
     )
     {
+        const string notificationText = "Задача была обновлена";
         var task = await GetTaskAsync(id, cancellationToken);
         await task.UpdateAsync(title, description, _unitOfWork, cancellationToken);
         _logger.Information("Updated task: {@task}", task);
+        
+        if (task.CreatorId != task.PerformerId)
+        {
+            _logger.Information("Sending a request to create a notification to the performer in the NotificationService");
+
+            var notificationId = await CreateNotificationAsync(task, notificationText, cancellationToken);
+            
+            _logger.Information("Notification created with id = {@notificationId}", notificationId);
+        }
     }
 
     public async System.Threading.Tasks.Task AssignPerformerAsync(
@@ -59,8 +75,64 @@ internal class TaskManager : ITaskManager
         CancellationToken cancellationToken
     )
     {
+        const string notificationText = "Вас назначили исполнителем задачи";
         var task = await GetTaskAsync(taskId, cancellationToken);
         await task.AssignPerformerAsync(userId, _unitOfWork, cancellationToken);
         _logger.Information("Assigned a performer for the task: {@task}", task);
+
+        if (task.CreatorId != userId)
+        {
+            _logger.Information("I am sending a request to create a notification to the performer in the NotificationService");
+
+            var notificationId = await CreateNotificationAsync(task, notificationText, cancellationToken);
+            
+            _logger.Information("Notification created with id = {@notificationId}", notificationId);
+        }
+    }
+
+    public async Task<PagedList<Task>> GetTaskListAsync(PageQueryFilter filter, CancellationToken cancellationToken)
+    {
+        var taskList = await _unitOfWork.Tasks.GetAllAsync(cancellationToken);
+
+        if (filter.Id != null)
+            taskList = taskList.Where(task => task.Id == filter.Id);
+
+        if (filter.CreatorId != null)
+            taskList = taskList.Where(task => task.CreatorId == filter.CreatorId);
+        
+        if (filter.PerformerId != null)
+            taskList = taskList.Where(task => task.PerformerId == filter.PerformerId);
+
+        if (!string.IsNullOrEmpty(filter.Title))
+            taskList = taskList.Where(task => task.Title.Contains(filter.Title, StringComparison.CurrentCultureIgnoreCase));
+
+        if (!string.IsNullOrEmpty(filter.Description))
+            taskList = taskList.Where(task =>
+                    task.Description != null &&
+                    task.Description.Contains(filter.Description, StringComparison.CurrentCultureIgnoreCase));
+        
+        var result = taskList.OrderBy(task => task.Id)
+            .ToArray();
+        
+        return new PagedList<Task>(result, filter.Page, filter.PageSize, result.Length);
+    }
+
+    private async Task<Guid> CreateNotificationAsync(
+        Task task,
+        string text,
+        CancellationToken cancellationToken)
+    {
+        var notificationRequest = new NotificationRequest
+        {
+            UserId = task.PerformerId,
+            Text = text,
+            TaskId = task.Id,
+        };
+            
+        var notificationId = await _notificationService.CreateNotificationAsync(
+            notificationRequest,
+            cancellationToken);
+
+        return notificationId;
     }
 }
