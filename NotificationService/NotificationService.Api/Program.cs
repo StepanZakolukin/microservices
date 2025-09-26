@@ -1,5 +1,6 @@
 using Core;
 using Core.Traces.Middleware;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 using NotificationService.Api.Services;
 using NotificationService.BusinessLogic;
 using NotificationService.Infrastructure;
@@ -16,6 +17,10 @@ builder.Services
     .AddInfrastructure(builder.Configuration)
     .AddOpenApi();
 
+builder.Services.AddHealthChecks()
+    .AddCheck(name: "self", () => HealthCheckResult.Healthy())
+    .AddNpgSql(builder.Configuration.GetConnectionString("DefaultConnection"), name: "postgres");
+
 builder.Services.AddControllers();
 
 var app = builder.Build();
@@ -26,6 +31,7 @@ if (app.Environment.IsDevelopment())
     app.UseOpenApi();
 }
 
+app.MapHealthChecks("/notification-service/health");
 app.UseNotifications();
 app.UseHttpsRedirection();
 app.UseAuthorization();
