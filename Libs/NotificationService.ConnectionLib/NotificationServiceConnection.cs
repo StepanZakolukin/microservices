@@ -6,7 +6,7 @@ namespace NotificationService.ConnectionLib;
 
 internal class NotificationServiceConnection : INotificationServiceConnection
 {
-    private const string BaseUrl = "https://localhost:5003/api";
+    private const string BaseUrl = "https://localhost:5004";
     private readonly IHttpRequestService _httpRequestService;
 
     public NotificationServiceConnection(IHttpRequestService httpRequestService)
@@ -19,7 +19,7 @@ internal class NotificationServiceConnection : INotificationServiceConnection
         var requestData = new HttpRequestData
         {
             Method = HttpMethod.Post,
-            Uri = CombineUri(BaseUrl, "notifications"),
+            Uri = CombineUri(BaseUrl, "api/notifications"),
             Body = notificationRequest
         };
 

@@ -15,7 +15,8 @@ internal class HttpRequestService : IHttpRequestService
     public HttpRequestService(
         IHttpConnectionService httpConnectionService,
         IEnumerable<IUnpackerHttpResponse> responseUnpackerList,
-        IEnumerable<IHttpContentPacker> contentPackerList, IEnumerable<ITraceWriter> traceWriterList)
+        IEnumerable<IHttpContentPacker> contentPackerList,
+        IEnumerable<ITraceWriter> traceWriterList)
     {
         _httpConnectionService = httpConnectionService;
         _responseUnpackerList = responseUnpackerList;
@@ -32,9 +33,7 @@ internal class HttpRequestService : IHttpRequestService
         var requestMessage = ConvertToHttpRequestMessage(requestData);
 
         foreach (var traceWriter in _traceWriterList)
-        {
             requestMessage.Headers.Add(traceWriter.Name, traceWriter.GetValue());
-        }
         
         var response = await _httpConnectionService.SendRequestAsync(requestMessage, client, connectionData.CancellationToken);
         

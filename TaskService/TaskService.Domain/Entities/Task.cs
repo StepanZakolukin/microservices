@@ -41,9 +41,9 @@ public partial class Task : BaseEntity<Guid>
 
 public partial class Task
 {
-    public static Task Create(string title, string? description = null, Guid id = default)
+    public static Task Create(string title, string? description, Guid creatorId, Guid id = default)
     {
-        return new Task(title, description, id);
+        return new Task(title, description, creatorId, id);
     }
     
     public void ThrowExceptionIfDeleted()

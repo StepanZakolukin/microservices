@@ -25,6 +25,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\..\Libs\Core\Core.csproj" />
+      <ProjectReference Include="..\..\Libs\NotificationService.ConnectionLib\NotificationService.ConnectionLib.csproj" />
       <ProjectReference Include="..\NotificationService.BusinessLogic\NotificationService.BusinessLogic.csproj" />
       <ProjectReference Include="..\NotificationService.Infrastructure\NotificationService.Infrastructure.csproj" />
     </ItemGroup>

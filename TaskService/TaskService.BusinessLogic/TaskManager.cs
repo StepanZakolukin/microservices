@@ -26,8 +26,9 @@ internal class TaskManager : ITaskManager
         Guid creatorId,
         CancellationToken cancellationToken)
     {
-        var task = Task.Create(title, description);
+        var task = Task.Create(title, description, creatorId);
         await _unitOfWork.Tasks.AddAsync(task, cancellationToken);
+        await _unitOfWork.SaveAsync(cancellationToken);
         _logger.Information("Created task {@task}", task);
         return task.Id;
     }
@@ -96,20 +97,17 @@ internal class TaskManager : ITaskManager
 
         if (filter.Id != null)
             taskList = taskList.Where(task => task.Id == filter.Id);
-
         if (filter.CreatorId != null)
             taskList = taskList.Where(task => task.CreatorId == filter.CreatorId);
-        
         if (filter.PerformerId != null)
             taskList = taskList.Where(task => task.PerformerId == filter.PerformerId);
-
         if (!string.IsNullOrEmpty(filter.Title))
             taskList = taskList.Where(task => task.Title.Contains(filter.Title, StringComparison.CurrentCultureIgnoreCase));
-
         if (!string.IsNullOrEmpty(filter.Description))
-            taskList = taskList.Where(task =>
-                    task.Description != null &&
-                    task.Description.Contains(filter.Description, StringComparison.CurrentCultureIgnoreCase));
+        {
+            taskList = taskList.Where(task => task.Description != null && task.Description.Contains(
+                filter.Description, StringComparison.CurrentCultureIgnoreCase));
+        }
         
         var result = taskList.OrderBy(task => task.Id)
             .ToArray();

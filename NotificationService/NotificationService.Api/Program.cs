@@ -9,9 +9,6 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-// Подключаем SignalR
-builder.Services.AddSignalR();
-
 // Подключаем Core сервисы, уведомления, бизнесс-логику, инфроструктуру
 builder.Services
     .AddCore(builder.Host)
@@ -34,6 +31,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseCors("AllowAll");
 app.MapHub<NotificationHub>("/hubs/notifications");
 app.UseHttpsRedirection();
 app.UseAuthorization();
