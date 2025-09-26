@@ -18,6 +18,10 @@ public class NotificationsController : ControllerBase
         _notificationService = notificationService;
     }
 
+    /// <summary>
+    /// Получить список уведомлений пользователя
+    /// </summary>
+    /// <param name="userId"></param>
     [HttpGet("{userId:guid}")]
     [ProducesResponseType<IEnumerable<NotificationResponse>>(StatusCodes.Status200OK)]
     public async Task<IActionResult> GetNotificationListAsync([FromRoute] Guid userId, CancellationToken cancellationToken)
@@ -35,6 +39,9 @@ public class NotificationsController : ControllerBase
         return Ok(result);
     }
 
+    /// <summary>
+    /// Создать уведомление
+    /// </summary>
     [HttpPost]
     [ProducesResponseType<Guid>(StatusCodes.Status201Created)]
     public async Task<IActionResult> CreateNotificationAsync(
@@ -55,6 +62,9 @@ public class NotificationsController : ControllerBase
         return Created("api/notifications", result);
     }
     
+    /// <summary>
+    /// Отметить уведомление как прочитанное
+    /// </summary>
     [HttpPut("{id:guid}/mark-as-read")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<IActionResult> MarkAsRead([FromRoute] Guid id, CancellationToken cancellationToken)

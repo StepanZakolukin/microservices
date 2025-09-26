@@ -2,5 +2,5 @@
 
 public record UserRequest
 {
-    public required Guid Id { get; init; }
+    public required Guid PerformerId { get; init; }
 }

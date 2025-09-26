@@ -55,7 +55,7 @@ internal class TaskManager : ITaskManager
         CancellationToken cancellationToken
     )
     {
-        const string notificationText = "Задача была обновлена";
+        var notificationText = $"Задача c id = {id} была обновлена";
         var task = await GetTaskAsync(id, cancellationToken);
         await task.UpdateAsync(title, description, _unitOfWork, cancellationToken);
         _logger.Information("Updated task: {@task}", task);
@@ -76,14 +76,14 @@ internal class TaskManager : ITaskManager
         CancellationToken cancellationToken
     )
     {
-        const string notificationText = "Вас назначили исполнителем задачи";
+        var notificationText = $"Вас назначили исполнителем задачи c id = {taskId}";
         var task = await GetTaskAsync(taskId, cancellationToken);
         await task.AssignPerformerAsync(userId, _unitOfWork, cancellationToken);
         _logger.Information("Assigned a performer for the task: {@task}", task);
 
         if (task.CreatorId != userId)
         {
-            _logger.Information("I am sending a request to create a notification to the performer in the NotificationService");
+            _logger.Information("Sending a request to create a notification to the performer in the NotificationService");
 
             var notificationId = await CreateNotificationAsync(task, notificationText, cancellationToken);
             

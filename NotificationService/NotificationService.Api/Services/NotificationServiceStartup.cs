@@ -1,4 +1,5 @@
-﻿using NotificationService.Api.Services.Interfaces;
+﻿using NotificationService.Api.Hubs;
+using NotificationService.Api.Services.Interfaces;
 
 namespace NotificationService.Api.Services;
 
@@ -22,4 +23,12 @@ public static class NotificationServiceStartup
         
         return services;
     }
+
+    public static WebApplication UseNotifications(this WebApplication builder)
+    {
+        builder.UseCors("AllowAll");
+        builder.MapHub<NotificationHub>("/hubs/notifications");
+        
+        return builder;
+    } 
 }

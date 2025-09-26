@@ -1,6 +1,5 @@
 using Core;
 using Core.Traces.Middleware;
-using NotificationService.Api.Hubs;
 using NotificationService.Api.Services;
 using NotificationService.BusinessLogic;
 using NotificationService.Infrastructure;
@@ -9,30 +8,25 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-// Подключаем Core сервисы, уведомления, бизнесс-логику, инфроструктуру
+// Подключаем Core сервисы, уведомления, бизнесс-логику, инфроструктуру, OpenApi
 builder.Services
     .AddCore(builder.Host)
     .AddNotifications()
     .AddBusinessLogic()
-    .AddInfrastructure(builder.Configuration);
+    .AddInfrastructure(builder.Configuration)
+    .AddOpenApi();
 
 builder.Services.AddControllers();
-
-// Регистрация сервисов Swagger
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseOpenApi();
 }
 
-app.UseCors("AllowAll");
-app.MapHub<NotificationHub>("/hubs/notifications");
+app.UseNotifications();
 app.UseHttpsRedirection();
 app.UseAuthorization();
 app.UseTraceReaderMiddleware();

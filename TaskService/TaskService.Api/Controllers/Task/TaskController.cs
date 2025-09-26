@@ -18,6 +18,9 @@ public class TaskController : ControllerBase
         _taskManager = taskManager;
     }
     
+    /// <summary>
+    /// Получить список задач (с фильтрацией и пагинацией)
+    /// </summary>
     [HttpGet]
     [ProducesResponseType<PagedList<TaskResponse>>(StatusCodes.Status200OK)]
     public async Task<IActionResult> GetTaskListAsync([FromQuery] PageQueryFilter filter, CancellationToken cancellationToken)
@@ -25,6 +28,9 @@ public class TaskController : ControllerBase
         return Ok((await _taskManager.GetTaskListAsync(filter, cancellationToken)).Convert(Convert));
     }
     
+    /// <summary>
+    /// Получить задачу по ID
+    /// </summary>
     [HttpGet("{id:guid}")]
     [ProducesResponseType<TaskResponse>(StatusCodes.Status200OK)]
     public async Task<IActionResult> GetTaskAsync([FromRoute] Guid id, CancellationToken cancellationToken)
@@ -33,6 +39,9 @@ public class TaskController : ControllerBase
         return Ok(Convert(task));
     }
     
+    /// <summary>
+    /// Создать задачу
+    /// </summary>
     [HttpPost]
     [ProducesResponseType<Guid>(StatusCodes.Status201Created)]
     public async Task<IActionResult> CreateTaskAsync(
@@ -48,6 +57,9 @@ public class TaskController : ControllerBase
         return Created("api/tasks", id);
     }
     
+    /// <summary>
+    /// Обновить задачу
+    /// </summary>
     [HttpPut("{id:guid}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<IActionResult> UpdateTaskAsync(
@@ -60,6 +72,9 @@ public class TaskController : ControllerBase
         return Ok();
     }
     
+    /// <summary>
+    /// Удалить задачу
+    /// </summary>
     [HttpDelete("{id:guid}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<IActionResult> DeleteTaskAsync([FromRoute] Guid id, CancellationToken cancellationToken)
@@ -69,7 +84,7 @@ public class TaskController : ControllerBase
     }
 
     /// <summary>
-    /// назначить исполнителя
+    /// Назначить исполнителя задачи
     /// </summary>
     [HttpPut("{id}/assign")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -79,7 +94,7 @@ public class TaskController : ControllerBase
         CancellationToken cancellationToken
     )
     {
-        await _taskManager.AssignPerformerAsync(id, user.Id, cancellationToken);
+        await _taskManager.AssignPerformerAsync(id, user.PerformerId, cancellationToken);
         return NoContent();
     }
     
